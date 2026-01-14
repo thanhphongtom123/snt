@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Số Nguyên Tố - Lý Thuyết & Thuật Toán</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Highlight.js Styles (Dynamic ID for switching) -->
+    <link id="hljs-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- MathJax -->
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            /* Light Theme Variables */
+            --primary-color: #1976d2;
+            --link-color: #0d47a1;
+            --text-color: #202124;
+            --bg-color: #f0f2f5;
+            --content-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --code-bg: #f6f8fa;
+            --inline-code-color: #d63384;
+            --inline-code-bg: rgba(27, 31, 35, 0.05);
+            --callout-info-bg: #e3f2fd;
+            --callout-info-border: #2196f3;
+            --callout-info-text: #0d47a1;
+            --callout-warn-bg: #fff3e0;
+            --callout-warn-border: #ff9800;
+            --callout-warn-text: #e65100;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --header-border: 1px solid #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme Variables */
+            --primary-color: #64b5f6;
+            --link-color: #82b1ff;
+            --text-color: #e8eaed;
+            --bg-color: #121212;
+            --content-bg: #1e1e1e;
+            --border-color: #333;
+            --code-bg: #2d2d2d;
+            --inline-code-color: #ff80ab;
+            --inline-code-bg: rgba(255, 255, 255, 0.1);
+            --callout-info-bg: #102a43;
+            --callout-info-border: #2196f3;
+            --callout-info-text: #bbdefb;
+            --callout-warn-bg: #3e2723;
+            --callout-warn-border: #ff9800;
+            --callout-warn-text: #ffcc80;
+            --shadow: 0 4px 12px rgba(0,0,0,0.4);
+            --header-border: 1px solid #333;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s, color 0.3s; }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Layout */
+        .wiki-container {
+            max-width: 1024px;
+            margin: 40px auto;
+            background: var(--content-bg);
+            padding: 60px 80px;
+            box-shadow: var(--shadow);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background-color: var(--code-bg);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--text-color);
+            border-bottom: var(--header-border);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 60px;
+            margin-bottom: 25px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        p { margin-bottom: 1.2rem; text-align: justify; }
+        
+        ul, ol { margin-bottom: 1.5rem; padding-left: 2rem; }
+        li { margin-bottom: 0.5rem; }
+
+        a { color: var(--link-color); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+
+        /* LaTeX Spacing Fix */
+        mjx-container {
+            margin: 0 3px !important;
+        }
+
+        /* Inline Code */
+        .inline-code {
+            font-family: 'Fira Code', monospace;
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-color);
+            padding: 0.2em 0.5em;
+            border-radius: 4px;
+            font-size: 0.85em;
+            vertical-align: middle;
+        }
+
+        /* Code Blocks */
+        .code-wrapper {
+            position: relative;
+            margin: 25px 0;
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--border-color);
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        pre { margin: 0; padding: 0; }
+        
+        pre code.hljs {
+            font-family: 'Fira Code', monospace;
+            padding: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            background-color: var(--code-bg);
+            color: var(--text-color);
+        }
+
+        /* Copy Button */
+        .copy-btn {
+            background: var(--content-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Image Container */
+        .img-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .img-caption {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Callouts */
+        .callout {
+            padding: 16px 20px;
+            margin: 25px 0;
+            border-left: 5px solid;
+            border-radius: 4px;
+        }
+        .callout.info {
+            background-color: var(--callout-info-bg);
+            border-color: var(--callout-info-border);
+            color: var(--callout-info-text);
+        }
+        .callout.warning {
+            background-color: var(--callout-warn-bg);
+            border-color: var(--callout-warn-border);
+            color: var(--callout-warn-text);
+        }
+        .callout-title {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Q&A Accordion */
+        .qa-box {
+            margin-bottom: 25px;
+            border-left: 3px solid var(--border-color);
+            padding-left: 20px;
+        }
+        .qa-question {
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .qa-question i { margin-right: 12px; }
+        .qa-answer { color: var(--text-color); opacity: 0.9; }
+
+        /* Animation */
+        .fade-element {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .wiki-container { padding: 30px 20px; margin: 0; border-radius: 0; border: none; }
+            h1 { font-size: 2rem; }
+            .theme-toggle { top: 20px; right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wiki-container">
+        
+        <button class="theme-toggle" id="theme-btn" title="Chuyển đổi giao diện Sáng/Tối">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <header class="fade-element">
+            <h1>Số Nguyên Tố: Lý Thuyết & Thuật Toán</h1>
+            <p>
+                Tài liệu tổng hợp chuyên sâu dành cho Lập trình thi đấu (Competitive Programming). 
+                Bài viết này đi từ những khái niệm nền tảng, cách tiếp cận ngây thơ cho đến các kỹ thuật tối ưu hóa.
+            </p>
+        </header>
+
+        <!-- SECTION 0 -->
+        <section class="fade-element">
+            <h2>0. Kiến thức nền tảng</h2>
+            <div class="callout warning">
+                <span class="callout-title">Định nghĩa chuẩn</span>
+                <ul>
+                    <li><strong>Số nguyên tố:</strong> Số tự nhiên $>1$, chỉ có 2 ước dương là 1 và chính nó.</li>
+                    <li><strong>Hợp số:</strong> Số tự nhiên $>1$, có nhiều hơn 2 ước dương.</li>
+                    <li><strong>Lưu ý:</strong> Số 1 không phải nguyên tố, không phải hợp số.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 1: NAIVE SIEVE -->
+        <section class="fade-element">
+            <h2>1. Ý tưởng "Ngây thơ" (Naive Approach)</h2>
+            <p>
+                Trước khi đến với thuật toán tối ưu, hãy xem cách tư duy tự nhiên nhất để giải quyết bài toán tìm số nguyên tố nhỏ hơn $N$.
+            </p>
+            <h3>Thuật toán sơ khai</h3>
+            <p>
+                Ta vẫn dùng ý tưởng loại bỏ bội số: "Nếu $i$ là số nguyên tố, thì $2i, 3i, 4i...$ là hợp số".
+                Tuy nhiên, ở cách cài đặt này, ta chưa áp dụng bất kỳ tối ưu toán học nào.
+            </p>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span>C++ Naive Implementation</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+<pre><code class="language-cpp">void naive_sieve(int n) {
+    vector<bool> is_prime(n + 1, true);
+    is_prime[0] = is_prime[1] = false;
+
+    // Duyệt từ 2 đến n (Chưa tối ưu dừng ở sqrt(n))
+    for (int i = 2; i <= n; i++) {
+        // Nếu i là số nguyên tố
+        if (is_prime[i]) {
+            // Đánh dấu tất cả bội số của i, bắt đầu từ 2*i
+            for (int j = 2 * i; j <= n; j += i) {
+                is_prime[j] = false;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>Phân tích ưu & nhược điểm</h3>
+            <div class="qa-box">
+                <div class="qa-question"><i class="fas fa-search"></i> Ưu điểm</div>
+                <div class="qa-answer">
+                    Dễ hiểu, dễ cài đặt, phản ánh trực tiếp định nghĩa về việc loại bỏ bội số. Không cần tính căn bậc hai.
+                </div>
+            </div>
+            <div class="qa-box">
+                <div class="qa-question"><i class="fas fa-exclamation-triangle"></i> Nhược điểm (Tại sao cần tối ưu?)</div>
+                <div class="qa-answer">
+                    <ul>
+                        <li><strong>Dư thừa bước lặp ngoài:</strong> Khi $i > \sqrt{N}$, các bội số của $i$ (nếu có) nhỏ hơn $N$ thực chất đã được đánh dấu bởi các số nhỏ hơn $\sqrt{N}$ rồi. Ví dụ: Với $N=100$, khi xét $i=11$, bội số đầu tiên là $22$ (đã bị $2$ đánh dấu), $33$ (đã bị $3$ đánh dấu)...</li>
+                        <li><strong>Dư thừa bước đánh dấu:</strong> Bắt đầu từ $2 \times i$ làm ta đánh dấu lại nhiều lần. Ví dụ số $6$ bị đánh dấu khi $i=2$ và lặp lại khi $i=3$.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: OPTIMIZED SIEVE -->
+        <section class="fade-element">
+            <h2>2. Sàng Eratosthenes Tối Ưu</h2>
+            <p>
+    <b>Sàng Eratosthenes</b> là một thuật toán dùng để <b>liệt kê tất cả các số nguyên tố không vượt quá một số nguyên dương $N$</b>.
+    Thay vì kiểm tra từng số một cách riêng lẻ, thuật toán hoạt động bằng cách
+    <b>loại dần các số hợp</b> dựa trên các ước nguyên tố nhỏ nhất của chúng.
+</p>
+
+<p>
+    Cách thực hiện của sàng Eratosthenes gồm các bước sau:
+</p>
+
+<ul>
+    <li>
+        Ban đầu, giả sử mọi số từ <b>2 đến $N$</b> đều là số nguyên tố.
+    </li>
+    <li>
+        Chọn số nhỏ nhất chưa bị loại, gọi là <b>$p$</b>. Khi đó $p$ là số nguyên tố.
+    </li>
+    <li>
+        Loại bỏ tất cả các bội của $p$ lớn hơn hoặc bằng <b>$p^2$</b>.
+    </li>
+    <li>
+        Lặp lại quá trình với số chưa bị loại tiếp theo cho đến khi <b>$p^2 > N$</b>.
+    </li>
+</ul>
+
+<p>
+    Sau khi kết thúc quá trình sàng, các số còn lại chưa bị loại chính là
+    <b>các số nguyên tố không vượt quá $N$</b>.
+</p>
+
+            <p>
+                Dưới đây là minh họa trực quan quá trình sàng lọc các hợp số.
+            </p>
+
+            <div class="img-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif" alt="Sieve of Eratosthenes Animation">
+                <p class="img-caption">Quy trình sàng các số từ 2 đến 120. Màu sắc biểu thị số nguyên tố đang xét dùng để loại bỏ các bội số. (Nguồn: Wikimedia Commons)</p>
+            </div>
+            
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span>C++ Optimized Implementation</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+<pre><code class="language-cpp">const int MAXN = 1000000;
+bool is_prime[MAXN + 1];
+
+void sieve() {
+    fill(is_prime, is_prime + MAXN + 1, true);
+    is_prime[0] = is_prime[1] = false;
+
+    // Tối ưu 1: Chỉ chạy đến sqrt(MAXN)
+    for (int i = 2; i * i <= MAXN; i++) {
+        if (is_prime[i]) {
+            // Tối ưu 2: Bắt đầu đánh dấu từ i * i
+            for (int j = i * i; j <= MAXN; j += i) {
+                is_prime[j] = false;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>Giải đáp thắc mắc & Nhận xét quan trọng</h3>
+            <div class="qa-box">
+                <div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Tại sao chỉ cần sàng các số nguyên tố đến $\sqrt{N}$?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Giả sử một số hợp $x \le N$ không bị loại khi ta sàng đến $\sqrt{N}$.  
+            Khi đó $x = a \cdot b$ với $a \le b$.  
+        </p>
+        <p>
+            Nếu cả $a$ và $b$ đều lớn hơn $\sqrt{N}$ thì:
+            $$ a \cdot b > \sqrt{N} \cdot \sqrt{N} = N $$
+            mâu thuẫn với $x \le N$.
+        </p>
+        <p>
+            Do đó, <b>mọi số hợp đều có ít nhất một ước nguyên tố $\le \sqrt{N}$</b>,  
+            và chắc chắn đã bị loại trước đó. Vì vậy chỉ cần sàng đến $\sqrt{N}$.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Tại sao khi sàng số $p$ lại bắt đầu từ $p^2$ mà không phải $2p$?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Các bội nhỏ hơn của $p$ như $2p, 3p, \dots, (p-1)p$  
+            đều đã được loại khi sàng với các số nhỏ hơn $p$.
+        </p>
+        <p>
+            Vì vậy, <b>$p^2$ là bội nhỏ nhất của $p$ chưa từng bị xử lý</b>,  
+            giúp tránh làm việc thừa và tối ưu thuật toán.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Tại sao không cần kiểm tra từng số xem có phải nguyên tố hay không?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Nếu kiểm tra từng số bằng cách thử chia, độ phức tạp sẽ là:
+            $ O(N \sqrt{N}) $
+
+            rất chậm với $N$ lớn.
+        </p>
+        <p>
+            Sàng Eratosthenes <b>loại bỏ hàng loạt các số hợp</b> chỉ bằng phép gán, nên nhanh hơn rất nhiều, đạt $O(N \log \log N)$.
+        </p>
+    </div>
+</div>
+                <div class="qa-question"><i class="fas fa-question-circle"></i> Tại sao độ phức tạp lại là $O(N \log \log N)$?</div>
+                <div class="qa-answer">
+                    <p>
+                        Đây là một kết quả toán học thú vị. Số lần lặp của vòng lặp trong là:
+                        $$ \frac{N}{2} + \frac{N}{3} + \frac{N}{5} + \dots + \frac{N}{p} = N \sum_{p \le \sqrt{N}} \frac{1}{p} $$
+                        Tổng của nghịch đảo các số nguyên tố phân kỳ rất chậm và xấp xỉ $\ln(\ln N)$ (Định lý Mertens). Vì $\log \log N$ tăng rất chậm (với $N=10^{18}$ nó chỉ khoảng 4), nên thuật toán gần như tuyến tính $O(N)$.
+                    </p>
+                </div>
+            </div>
+            <div class="qa-box">
+                <div class="qa-question"><i class="fas fa-microchip"></i> Giới hạn về bộ nhớ (Memory Limit)?</div>
+                <div class="qa-answer">
+                    <p>
+                        Sàng Eratosthenes tốn bộ nhớ $O(N)$.
+                        <br>- Với $N = 10^7$ (10 triệu), mảng `bool` tốn khoảng 10MB -> <strong>Ổn</strong>.
+                        <br>- Với $N = 10^8$ (100 triệu), tốn 100MB -> <strong>Khá nguy hiểm</strong> trong thi đấu (thường giới hạn 256MB hoặc 512MB).
+                        <br>- Với $N > 10^9$, chắc chắn <strong>Tràn bộ nhớ (MLE)</strong>.
+                        <br>
+                        <strong>Giải pháp:</strong>
+                        1. Dùng `std::bitset` hoặc `vector<bool>` để giảm bộ nhớ xuống 8 lần (1 bit thay vì 1 byte).
+                        2. Nếu cần sàng đoạn lớn hoặc $N$ rất lớn, phải chuyển sang <strong>Sàng Phân Đoạn (Segmented Sieve)</strong>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SEGMENTED SIEVE -->
+<section class="fade-element">
+    <h2>3. Sàng Phân Đoạn (Segmented Sieve)</h2>
+
+    <div class="callout info">
+        <span class="callout-title">Ứng dụng</span>
+        Tìm số nguyên tố trong đoạn $[L, R]$ với $R$ rất lớn (tới $10^{12}$) nhưng $R-L$ nhỏ ($\approx 10^6$).
+    </div>
+
+    <h3>Ý tưởng ban đầu (cách nghĩ ngây thơ)</h3>
+    <p>
+        Ta muốn kiểm tra từng số trong đoạn $[L, R]$ xem có phải số nguyên tố hay không.
+        Với mỗi số, ta thử chia cho các số từ $2$ đến $\sqrt{R}$.
+    </p>
+    <p>
+        Cách này có độ phức tạp rất lớn:
+        $$ O((R-L+1)\sqrt{R}) $$
+        và hoàn toàn không khả thi khi $R$ lớn.
+    </p>
+
+    <h3>Ý tưởng cốt lõi của sàng phân đoạn</h3>
+    <p>
+        Thay vì sàng từ $1$ đến $R$, ta chỉ:
+    </p>
+    <ul>
+        <li>Sàng trước <b>các số nguyên tố $\le \sqrt{R}$</b></li>
+        <li>Dùng các số nguyên tố này để loại bội của chúng trong đoạn $[L, R]$</li>
+    </ul>
+
+    <p>
+        Như vậy, bộ nhớ chỉ cần cho đoạn $[L, R]$, còn thời gian vẫn rất nhanh.
+    </p>
+
+    <h3>Các bước thực hiện</h3>
+    <ol>
+        <li>
+            Sàng Eratosthenes để lấy danh sách các số nguyên tố $\le \sqrt{R}$
+        </li>
+        <li>
+            Tạo mảng <code>isPrimeSegment</code> kích thước <code>R - L + 1</code>, ban đầu gán là <code>true</code>
+        </li>
+        <li>
+            Với mỗi số nguyên tố <code>p</code>, loại các bội của <code>p</code> trong đoạn
+        </li>
+        <li>
+            Các số còn lại là số nguyên tố trong đoạn $[L, R]$
+        </li>
+    </ol>
+
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span>C++ Segmented Sieve</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+<pre><code class="language-cpp">void segmentedSieve(long long L, long long R) {
+    long long lim = sqrt(R);
+    vector<bool> mark(lim + 1, true);
+    vector<long long> primes;
+    
+    // Bước 1: Sàng thường để tìm primes <= sqrt(R)
+    for (long long i = 2; i * i <= lim; ++i) {
+        if (mark[i]) {
+            for (long long j = i * i; j <= lim; j += i) mark[j] = false;
+        }
+    }
+    for (long long i = 2; i <= lim; ++i) {
+        if (mark[i]) primes.push_back(i);
+    }
+
+    // Bước 2: Sàng đoạn [L, R] dùng primes đã tìm
+    vector<bool> is_prime(R - L + 1, true);
+    for (long long p : primes) {
+        // Tìm bội số đầu tiên của p trong đoạn [L, R]
+        // start = ceil(L/p) * p
+        long long start = (L + p - 1) / p * p;
+        start = max(start, p * p); 
+
+        for (long long j = start; j <= R; j += p) {
+            is_prime[j - L] = false; // Ánh xạ về index 0
+        }
+    }
+    if (L == 1) is_prime[0] = false;
+}</code></pre>
+            </div>
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Có cần sàng các số nguyên tố đến $\sqrt{R}$ hay đến $\sqrt{R-L}$?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Bắt buộc phải sàng đến <b>$\sqrt{R}$</b>.
+        </p>
+        <p>
+            Vì một số hợp $x \in [L, R]$ có thể lớn gần $R$,
+            và ước nguyên tố nhỏ nhất của nó có thể lên tới $\sqrt{x} \approx \sqrt{R}$.
+        </p>
+        <p>
+            Nếu chỉ sàng đến $\sqrt{R-L}$ thì sẽ <b>bỏ sót các số hợp</b>.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Nếu $L$ rất nhỏ (ví dụ $L=1$) thì thuật toán có thay đổi không?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Không thay đổi về mặt ý tưởng, nhưng cần <b>xử lý riêng số 1</b>.
+        </p>
+        <p>
+            Vì 1 không phải là số nguyên tố và cũng không bị loại bởi bất kỳ bội nào,
+            ta cần gán thủ công:
+            <code>isPrimeSegment[0] = false</code> nếu <code>L == 1</code>.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Tại sao phải dùng kiểu <code>long long</code>?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Vì <code>R</code> có thể lên tới $10^{12}$, vượt xa giới hạn của <code>int</code>.
+        </p>
+        <p>
+            Các phép tính như <code>p*p</code>, <code>ceil(L/p)*p</code>
+            đều có thể gây <b>tràn số</b> nếu dùng <code>int</code>.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Vì sao không loại số <code>p</code> nếu <code>p</code> nằm trong đoạn?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Khi <code>p</code> là số nguyên tố và <code>p ∈ [L, R]</code>,
+            ta <b>không được loại nó</b>.
+        </p>
+        <p>
+            Do đó ta phải bắt đầu từ:
+            <code>max(p*p, ceil(L/p)*p)</code>,
+            đảm bảo rằng chỉ loại các <b>bội thực sự</b> của <code>p</code>.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Có thể dùng <code>vector&lt;bool&gt;</code> không? Hay nên dùng mảng thường?
+    </div>
+    <div class="qa-answer">
+        <p>
+            <code>vector&lt;bool&gt;</code> tiết kiệm bộ nhớ vì nén bit,
+            nhưng truy cập chậm và dễ gây khó debug.
+        </p>
+        <p>
+            Trong thi đấu:
+            <ul>
+                <li>Đoạn nhỏ → <code>vector&lt;bool&gt;</code> vẫn ổn</li>
+                <li>Cần tốc độ → <code>vector&lt;char&gt;</code> hoặc mảng thường</li>
+            </ul>
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Sàng phân đoạn có thể dùng để đếm số nguyên tố không?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Hoàn toàn có thể.
+        </p>
+        <p>
+            Sau khi sàng xong, chỉ cần duyệt mảng
+            <code>isPrimeSegment</code> và đếm số phần tử còn <code>true</code>.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Khi nào thì sàng phân đoạn là lựa chọn bắt buộc?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Khi:
+        </p>
+        <ul>
+            <li>$R$ rất lớn (≥ $10^9$)</li>
+            <li>$R-L$ tương đối nhỏ (≤ $10^6$)</li>
+            <li>Cần liệt kê hoặc đếm nguyên tố trong đoạn</li>
+        </ul>
+        <p>
+            Nếu $R$ nhỏ, sàng Eratosthenes thường đơn giản và nhanh hơn.
+        </p>
+    </div>
+</div>
+        </section>
+
+        <!-- SECTION 4: MILLER RABIN -->
+        <section class="fade-element">
+            <h2>4. Miller-Rabin (Kiểm tra số lớn)</h2>
+            <p>
+                Khi $N$ rất lớn (ví dụ $10^{18}$), việc chạy vòng lặp $O(\sqrt{N})$ mất khoảng $10^9$ phép tính (1 giây - quá chậm nếu có nhiều test case). Miller-Rabin là giải pháp thay thế hoàn hảo.
+            </p>
+
+            <div class="callout warning">
+                <span class="callout-title">Cơ sở toán học & Vấn đề của Fermat</span>
+                <p>
+                    <strong>1. Định lý Fermat nhỏ:</strong> Nếu $p$ là số nguyên tố, thì với mọi số $a$ không chia hết cho $p$:
+                    $$ a^{p-1} \equiv 1 \pmod p $$
+                </p>
+                <p>
+                    <strong>2. Lỗ hổng (Carmichael Numbers):</strong>
+                    Nếu ta chỉ kiểm tra $a^{N-1} \equiv 1 \pmod N$ để kết luận $N$ nguyên tố, ta sẽ sai.
+                    Tồn tại các hợp số $N$ (gọi là số Carmichael, ví dụ 561, 1105, 1729) thỏa mãn tính chất trên với <strong>mọi</strong> cơ số $a$ nguyên tố cùng nhau với $N$.
+                    Do đó, phép kiểm tra Fermat thông thường là <strong>không đủ</strong>.
+                </p>
+                <p>
+                    <strong>3. Cải tiến Miller-Rabin:</strong>
+                    Thuật toán này vá lỗ hổng trên bằng cách dựa vào tính chất nghiệm của phương trình $x^2 \equiv 1 \pmod p$.
+                    Nếu $p$ nguyên tố, phương trình này chỉ có 2 nghiệm là $1$ và $p-1$ (tức $-1$).
+                    Nếu trong quá trình tính $a^{N-1}$, ta phát hiện một "căn bậc hai của 1" mà khác $1$ và $-1$, thì $N$ chắc chắn là hợp số.
+                </p>
+            </div>
+            
+            <div class="code-wrapper">
+                <div class="code-header">
+                    <span>C++ Miller-Rabin Template (Deterministic &lt; 2^64)</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+<pre><code class="language-cpp">using u64 = unsigned long long;
+using u128 = __int128;
+
+u64 binpower(u64 base, u64 e, u64 mod) {
+    u64 result = 1;
+    base %= mod;
+    while (e) {
+        if (e & 1) result = (u128)result * base % mod;
+        base = (u128)base * base % mod;
+        e >>= 1;
+    }
+    return result;
+}
+
+bool check_composite(u64 n, u64 a, u64 d, int s) {
+    u64 x = binpower(a, d, n);
+    if (x == 1 || x == n - 1) return false;
+    for (int r = 1; r < s; r++) {
+        x = (u128)x * x % n;
+        if (x == n - 1) return false;
+    }
+    return true;
+}
+
+bool isPrime(u64 n) {
+    if (n < 2) return false;
+    int r = 0;
+    u64 d = n - 1;
+    while ((d & 1) == 0) { d >>= 1; r++; }
+    
+    // Tập cơ số chuẩn cho u64 để đảm bảo chính xác 100%
+    for (int a : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
+        if (n == a) return true;
+        if (check_composite(n, a, d, r)) return false;
+    }
+    return true;
+}</code></pre>
+            </div>
+            <div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Tại sao cần Miller–Rabin khi đã có sàng phân đoạn?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Sàng phân đoạn chỉ hiệu quả khi <code>R - L</code> nhỏ (≈ $10^6$).
+        </p>
+        <p>
+            Nếu chỉ cần kiểm tra <b>một vài số rất lớn</b> (tới $10^{18}$),
+            thì Miller–Rabin nhanh và phù hợp hơn vì:
+        </p>
+        <ul>
+            <li>Không cần mảng hay bộ nhớ lớn</li>
+            <li>Thời gian gần như hằng số cho mỗi số</li>
+        </ul>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Miller–Rabin là thuật toán xác suất hay tất định?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Về bản chất, Miller–Rabin là <b>thuật toán xác suất</b>.
+        </p>
+        <p>
+            Tuy nhiên, với một tập cơ sở kiểm tra cố định,
+            nó trở thành <b>tất định</b> cho các giới hạn cụ thể:
+        </p>
+        <ul>
+            <li>$n &lt; 2^{32}$: chỉ cần 2–3 cơ sở</li>
+            <li>$n &lt; 10^{18}$: một tập cơ sở nhỏ là đủ</li>
+        </ul>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Vì sao Miller–Rabin nhanh hơn thử chia?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Thử chia cần kiểm tra đến $\sqrt{n}$:
+            $$ O(\sqrt{n}) $$
+        </p>
+        <p>
+            Miller–Rabin dựa trên <b>lũy thừa mô-đun</b>:
+            $$ O(k \log n) $$
+            với $k$ là số cơ sở kiểm tra (rất nhỏ).
+        </p>
+        <p>
+            Với $n$ cỡ $10^{18}$, sự khác biệt là cực kỳ lớn.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Số giả nguyên tố (pseudoprime) là gì?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Là số hợp nhưng <b>đánh lừa được</b> một số phép kiểm tra nguyên tố.
+        </p>
+        <p>
+            Miller–Rabin khắc phục điều này bằng cách
+            kiểm tra với <b>nhiều cơ sở khác nhau</b>,
+            làm xác suất sai gần như bằng 0.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Tại sao phải viết $n-1 = d \cdot 2^s$?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Đây là bước cốt lõi của Miller–Rabin.
+        </p>
+        <p>
+            Ta kiểm tra xem:
+            $$ a^d \equiv 1 \pmod n \quad \text{hoặc} \quad a^{d\cdot 2^r} \equiv -1 \pmod n $$
+            với một số $r$.
+        </p>
+        <p>
+            Nếu cả hai điều kiện đều sai, chắc chắn $n$ là hợp số.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Miller–Rabin có bao giờ sai không?
+    </div>
+    <div class="qa-answer">
+        <p>
+            Với phiên bản xác suất: <b>có thể sai</b>, nhưng xác suất rất nhỏ.
+        </p>
+        <p>
+            Với phiên bản dùng tập cơ sở chuẩn cho $n \le 10^{18}$:
+            <b>coi như không sai</b> trong thực tế thi đấu.
+        </p>
+    </div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">
+        <i class="fas fa-question-circle"></i>
+        Khi nào nên dùng Miller–Rabin thay vì sàng?
+    </div>
+    <div class="qa-answer">
+        <ul>
+            <li>Kiểm tra một số đơn lẻ rất lớn</li>
+            <li>Không cần liệt kê hàng loạt</li>
+            <li>Dùng chung với Pollard–Rho để phân tích thừa số</li>
+        </ul>
+    </div>
+</div>
+
+        </section>
+
+        <!-- SECTION 5: BÀI TẬP -->
+        <section class="fade-element">
+            <h2>5. Bài tập luyện tập</h2>
+            <p>Sau khi nắm vững lý thuyết, hãy thử sức với các bài toán sau:</p>
+            
+            <div class="callout info">
+                <span class="callout-title">Cơ bản</span>
+                <ul>
+                    <li><a href="https://vn.spoj.com/problems/PNUMBER/" target="_blank">SPOJ PNUMBER</a> - Tìm số nguyên tố trong đoạn (Sàng cơ bản).</li>
+                    <li><a href="https://codeforces.com/problemset/problem/17/A" target="_blank">Codeforces 17A</a> - Noldbach problem.</li>
+                </ul>
+            </div>
+
+            <div class="callout warning">
+                <span class="callout-title">Nâng cao</span>
+                <ul>
+                    <li><a href="https://www.spoj.com/problems/PRIME1/" target="_blank">SPOJ PRIME1</a> - Prime Generator (Bài toán kinh điển về Segmented Sieve).</li>
+                    <li><a href="https://www.spoj.com/problems/PON/" target="_blank">SPOJ PON</a> - Prime or Not (Kiểm tra số lớn dùng Miller-Rabin).</li>
+                    <li><a href="https://codeforces.com/problemset/problem/230/B" target="_blank">Codeforces 230B</a> - T-primes (Ứng dụng tính chất số lượng ước).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="wiki-footer">
+            <h3>Tài liệu tham khảo</h3>
+            <ul>
+                <li><i class="fas fa-book"></i> <a href="https://vnoi.info/wiki/algo/math/prime.md" target="_blank">VNOI Wiki: Số nguyên tố</a></li>
+                <li><i class="fas fa-book"></i> <a href="https://cp-algorithms.com/algebra/sieve-of-eratosthenes.html" target="_blank">CP-Algorithms: Sieve of Eratosthenes</a></li>
+            </ul>
+            <p style="margin-top: 20px; font-size: 0.8rem;">Soạn bởi Hoàng Phúc</p>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // 1. Inline Code Parser (Markdown Style)
+        function parseInlineCode() {
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            const nodesToReplace = [];
+            while (node = walker.nextNode()) {
+                if (['PRE', 'CODE', 'SCRIPT', 'STYLE'].includes(node.parentElement.tagName)) continue;
+                if (node.nodeValue.includes('`')) nodesToReplace.push(node);
+            }
+            nodesToReplace.forEach(node => {
+                const fragment = document.createDocumentFragment();
+                const parts = node.nodeValue.split(/(`[^`]+`)/g);
+                parts.forEach(part => {
+                    if (part.startsWith('`') && part.endsWith('`')) {
+                        const codeSpan = document.createElement('code');
+                        codeSpan.className = 'inline-code';
+                        codeSpan.textContent = part.slice(1, -1);
+                        fragment.appendChild(codeSpan);
+                    } else fragment.appendChild(document.createTextNode(part));
+                });
+                node.parentNode.replaceChild(fragment, node);
+            });
+        }
+
+        // 2. Dark/Light Mode Logic
+        const themeBtn = document.getElementById('theme-btn');
+        const htmlEl = document.documentElement;
+        const hljsLink = document.getElementById('hljs-theme');
+        const themeIcon = themeBtn.querySelector('i');
+
+        // Check local storage or system preference
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        setTheme(savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = htmlEl.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        });
+
+        function setTheme(theme) {
+            htmlEl.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            if (theme === 'dark') {
+                hljsLink.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css";
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                hljsLink.href = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css";
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        // 3. Init
+        document.addEventListener('DOMContentLoaded', () => {
+            parseInlineCode();
+            hljs.highlightAll();
+        });
+
+        // 4. Fade Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-element').forEach(el => observer.observe(el));
+
+        // 5. Copy Button
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.closest('.code-wrapper').querySelector('code').innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = btn.innerText;
+                    btn.innerText = 'Copied!';
+                    setTimeout(() => { btn.innerText = originalText; }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
