@@ -20,7 +20,7 @@
     <link rel="manifest" href="site.webmanifest">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <!-- MathJax -->
+    
     <script>
         MathJax = {
             tex: {
@@ -37,7 +37,7 @@
 
     <style>
         :root {
-            /* Light Theme Variables */
+            
             --primary-color: #1976d2;
             --link-color: #0d47a1;
             --text-color: #202124;
@@ -58,7 +58,7 @@
         }
 
         [data-theme="dark"] {
-            /* Dark Theme Variables */
+            
             --primary-color: #64b5f6;
             --link-color: #82b1ff;
             --text-color: #e8eaed;
@@ -94,7 +94,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Layout */
+        
         .wiki-container {
             max-width: 1024px;
             margin: 40px auto;
@@ -106,7 +106,7 @@
             position: relative;
         }
 
-        /* Theme Toggle Button */
+        
         .theme-toggle {
             position: absolute;
             top: 40px;
@@ -131,7 +131,7 @@
             color: var(--primary-color);
         }
 
-        /* Typography */
+        
         h1 {
             font-size: 2.5rem;
             font-weight: 300;
@@ -185,14 +185,14 @@
             text-decoration: underline;
         }
 
-        /* LaTeX Spacing Fix */
+        
         mjx-container {
             margin: 0 3px !important;
         }
 
-        /* Inline Code */
+        
         .inline-code {
-            font-family: 'Fira Code', monospace;
+            font-family: 'Consolas', monospace;
             background-color: var(--inline-code-bg);
             color: var(--inline-code-color);
             padding: 0.2em 0.5em;
@@ -201,7 +201,7 @@
             vertical-align: middle;
         }
 
-        /* Code Blocks */
+        
         .code-wrapper {
             position: relative;
             margin: 25px 0;
@@ -233,7 +233,7 @@
         }
 
         pre code.hljs {
-            font-family: 'Fira Code', monospace;
+            font-family: 'Consolas', monospace;
             padding: 20px;
             font-size: 0.9rem;
             line-height: 1.6;
@@ -241,7 +241,7 @@
             color: var(--text-color);
         }
 
-        /* Copy Button */
+        
         .copy-btn {
             background: var(--content-bg);
             border: 1px solid var(--border-color);
@@ -259,7 +259,7 @@
             border-color: var(--primary-color);
         }
 
-        /* Image Container */
+        
         .img-container {
             text-align: center;
             margin: 30px 0;
@@ -284,7 +284,7 @@
             font-style: italic;
         }
 
-        /* Callouts */
+        
         .callout {
             padding: 16px 20px;
             margin: 25px 0;
@@ -313,7 +313,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* Q&A Accordion */
+        
         .qa-box {
             margin-bottom: 25px;
             border-left: 3px solid var(--border-color);
@@ -339,7 +339,7 @@
             opacity: 0.9;
         }
 
-        /* Animation */
+        
         .fade-element {
             opacity: 0;
             transform: translateY(20px);
@@ -387,7 +387,7 @@
             </p>
         </header>
 
-        <!-- SECTION 0 -->
+        
         <section class="fade-element" id="basic">
             <h2>0. Kiến thức nền tảng</h2>
             <div class="callout warning">
@@ -400,7 +400,7 @@
             </div>
         </section>
 
-        <!-- SECTION 1: NAIVE SIEVE -->
+        
         <section class="fade-element" id="sec2">
             <h2>1. Ý tưởng cơ bản</h2>
             <p>
@@ -459,7 +459,7 @@
             </div>
         </section>
 
-        <!-- SECTION 2: OPTIMIZED SIEVE -->
+        
         <section class="fade-element" id="sec3">
             <h2>2. Sàng Eratosthenes Tối Ưu</h2>
             <p>
@@ -619,7 +619,7 @@ void sieve() {
             </div>
         </section>
 
-        <!-- SECTION 3: SEGMENTED SIEVE -->
+        
         <section class="fade-element" id="sec4">
             <h2>3. Sàng Phân Đoạn (Segmented Sieve)</h2>
 
@@ -682,11 +682,15 @@ void sieve() {
     // Bước 1: Sàng thường để tìm primes <= sqrt(R)
     for (long long i = 2; i * i <= lim; ++i) {
         if (mark[i]) {
-            for (long long j = i * i; j <= lim; j += i) mark[j] = false;
+            for (long long j = i * i; j <= lim; j += i) {
+                mark[j] = false;
+            }
         }
     }
     for (long long i = 2; i <= lim; ++i) {
-        if (mark[i]) primes.push_back(i);
+        if (mark[i]) {
+            primes.push_back(i);
+        }
     }
 
     // Bước 2: Sàng đoạn [L, R] dùng primes đã tìm
@@ -701,7 +705,9 @@ void sieve() {
             is_prime[j - L] = false; // Ánh xạ về index 0
         }
     }
-    if (L == 1) is_prime[0] = false;
+    if (L == 1) {
+        is_prime[0] = false;
+    }
 }</code></pre>
             </div>
             <div class="qa-box">
@@ -831,7 +837,7 @@ void sieve() {
             </div>
         </section>
 
-        <!-- SECTION 4: MILLER RABIN -->
+        
         <section class="fade-element" id="sec5">
             <h2>4. Miller-Rabin (Kiểm tra số lớn)</h2>
             <p>
@@ -875,7 +881,9 @@ u64 binpower(u64 base, u64 e, u64 mod) {
     u64 result = 1;
     base %= mod;
     while (e) {
-        if (e & 1) result = (u128)result * base % mod;
+        if (e & 1) {
+            result = (u128)result * base % mod;
+        }
         base = (u128)base * base % mod;
         e >>= 1;
     }
@@ -884,24 +892,37 @@ u64 binpower(u64 base, u64 e, u64 mod) {
 
 bool check_composite(u64 n, u64 a, u64 d, int s) {
     u64 x = binpower(a, d, n);
-    if (x == 1 || x == n - 1) return false;
+    if (x == 1 || x == n - 1) {
+        return false;
+    }
     for (int r = 1; r < s; r++) {
         x = (u128)x * x % n;
-        if (x == n - 1) return false;
+        if (x == n - 1) {
+            return false;
+        }
     }
     return true;
 }
 
 bool isPrime(u64 n) {
-    if (n < 2) return false;
+    if (n < 2) {
+        return false;
+    }
     int r = 0;
     u64 d = n - 1;
-    while ((d & 1) == 0) { d >>= 1; r++; }
+    while ((d & 1) == 0) { 
+        d >>= 1; 
+        r++; 
+    }
     
     // Tập cơ số chuẩn cho u64 để đảm bảo chính xác 100%
     for (int a : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
-        if (n == a) return true;
-        if (check_composite(n, a, d, r)) return false;
+        if (n == a) {
+            return true;
+        }
+        if (check_composite(n, a, d, r)) {
+            return false;
+        }
     }
     return true;
 }</code></pre>
@@ -1036,7 +1057,7 @@ bool isPrime(u64 n) {
 
         </section>
 
-        <!-- SECTION 5: BÀI TẬP -->
+        
         <section class="fade-element" id="sec6">
             <h2>5. Bài tập luyện tập</h2>
             <p>Sau khi nắm vững lý thuyết, hãy thử sức với các bài toán sau:</p>
@@ -1064,7 +1085,7 @@ bool isPrime(u64 n) {
             </div>
         </section>
 
-        <!-- FOOTER -->
+        
         <footer class="wiki-footer">
             <h3>Tài liệu tham khảo</h3>
             <ul>
@@ -1072,19 +1093,28 @@ bool isPrime(u64 n) {
                         Wiki: Số nguyên tố</a></li>
                 <li><i class="fas fa-book"></i> <a href="https://cp-algorithms.com/algebra/sieve-of-eratosthenes.html"
                         target="_blank">CP-Algorithms: Sieve of Eratosthenes</a></li>
+                <li><i class="fas fa-book"></i> <a
+                        href="https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test"
+                        target="_blank">Wikipedia: Miller–Rabin primality test</a></li>
+                <li><a class="video-link" href="https://youtu.be/wVCY8m_6tGY?si=Aot0_AEJa8JMJNiX" target="_blank"
+                    rel="noopener">
+                    <i class="fas fa-video"></i> Video của Yugihacker về Sàng Eratosthenes
+                </a></li>
+                <li><a class="video-link" href="https://youtu.be/8bPwmow6UQk?si=yosz8u5WKnhGCkLq" target="_blank"
+                    rel="noopener">
+                    <i class="fas fa-video"></i> Video của Yugihacker về Miller-Rabin
+                </a></li>
             </ul>
             <p style="margin-top: 20px; font-size: 0.8rem;">Soạn bởi Hoàng Phúc</p>
         </footer>
 
     </div>
 
-    <!-- SCRIPTS -->
+    
     <link id="hljs-theme" rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
-
-        // 1. Inline Code Parser (Markdown Style)
         function parseInlineCode() {
             const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
             let node;
@@ -1111,14 +1141,14 @@ bool isPrime(u64 n) {
             block.textContent = block.textContent;
         });
         hljs.highlightAll();
+
         
-        // 2. Dark/Light Mode Logic
         const themeBtn = document.getElementById('theme-btn');
         const htmlEl = document.documentElement;
         const hljsLink = document.getElementById('hljs-theme');
         const themeIcon = themeBtn.querySelector('i');
 
-        // Check local storage or system preference
+        
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         setTheme(savedTheme);
 
@@ -1146,7 +1176,7 @@ bool isPrime(u64 n) {
             hljs.highlightAll();
         });
 
-        // 4. Fade Animation
+        
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1155,7 +1185,7 @@ bool isPrime(u64 n) {
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-element').forEach(el => observer.observe(el));
 
-        // 5. Copy Button
+        
         document.querySelectorAll('.copy-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const text = btn.closest('.code-wrapper').querySelector('code').innerText;
